@@ -1,0 +1,39 @@
+{
+    "name":"cftrevco",
+    "slug":"cftrevco",
+    "version":"0.5.0",
+    "author":"Jordan Clark <jordanclark@gmail.com>",
+    "keywords":[
+        "trevco",
+		"shopping",
+		"ecommerce",
+        "api",
+        "rest"
+    ],
+    "shortDescription":"API client for trevco b2b",
+    "type":"modules",
+    "location":"jordanclark/cftrevco#v0.5.0",
+    "repository":{
+        "URL":"https://github.com/jordanclark/cftrevco.git",
+        "type":"GIT"
+    },
+    "homepage":"https://github.com/jordanclark/cftrevco",
+    "bugs":"https://github.com/jordanclark/cftrevco/issues",
+    "license":[
+        {
+            "type":"Apache-2.0",
+            "URL":"https://github.com/jordanclark/cftrevco/blob/master/LICENSE"
+        }
+    ],
+    "private":false,
+    "ignore":[
+        "**/.*",
+        "/test/",
+        "/tests/"
+    ],
+    "scripts":{
+        "postVersion":"package set location='jordanclark/cftrevco#v`package version`'",
+        "onRelease":"publish",
+        "postPublish":"!git push --follow-tags"
+    }
+}
