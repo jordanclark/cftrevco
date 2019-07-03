@@ -46,7 +46,7 @@ component {
 	}
 
 	boolean function isAuthenticated() {
-		if( dateCompare( this.authExpires, now() ) != -1 ) {
+		if( dateCompare( this.authExpires, now() ) != 1 ) {
 			// auth equal or greater then now
 			this.authToken = "";
 		}
@@ -57,7 +57,7 @@ component {
 	}
 
 	function getAuthenticated() {
-		if( dateCompare( this.authExpires, now() ) != -1 ) {
+		if( dateCompare( this.authExpires, now() ) != 1 ) {
 			// auth equal or greater then now
 			this.authToken = "";
 		}
