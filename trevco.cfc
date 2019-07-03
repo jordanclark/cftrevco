@@ -13,6 +13,7 @@ component {
 		this.apiUrl = arguments.apiUrl;
 		this.customerID = arguments.customerID;
 		this.authToken = arguments.authToken;
+		this.authExpires = now();
 		this.httpTimeOut = 120;
 		return this;
 	}
@@ -38,43 +39,55 @@ component {
 		} );
 		if ( out.success && structKeyExists( out.response, "token" ) && len( out.response.token ) ) {
 			this.authToken = out.response.token;
+			this.authExpires = parseDateTime( out.response.expirationDate );
 			// this.customerID = out.response.customers[ 1 ].customerID;
 		}
 		return out;
 	}
 
-	function whoAmI() {
-		if ( !len( this.authToken ) ) {
+	boolean function isAuthenticated() {
+		if( dateCompare( this.authExpires, now() ) != -1 ) {
+			// auth equal or greater then now
+			this.authToken = "";
+		}
+		if( !len( this.authToken ) ) {
+			return false;
+		}
+		return true;
+	}
+
+	function getAuthenticated() {
+		if( dateCompare( this.authExpires, now() ) != -1 ) {
+			// auth equal or greater then now
+			this.authToken = "";
+		}
+		if( !len( this.authToken ) ) {
 			this.getAuthToken();
 		}
+	}
+
+	function whoAmI() {
+		this.getAuthenticated();
 		return this.apiRequest( api= "GET /whoami" );
 	}
 
 	function listItems( numeric page= 1, numeric itemsPerPage= 100, boolean active, string sort= "", string order= "", string designName= "", string sku= "" ) {
-		if ( !len( this.authToken ) ) {
-			this.getAuthToken();
-		}
+		this.getAuthenticated();
 		return this.apiRequest( api= "GET /item", argumentCollection= arguments );
 	}
 
 	function listCategories( numeric page= 1, numeric itemsPerPage= 100, string sort= "", string order= "" ) {
-		if ( !len( this.authToken ) ) {
-			this.getAuthToken();
-		}
+		this.getAuthenticated();
 		return this.apiRequest( api= "GET /category", argumentCollection= arguments );
 	}
 
 	function listDesigns( numeric page= 1, numeric itemsPerPage= 100, string sort= "", string order= "", string q= "", string designId= "", string designName= "", string name= "" ) {
-		if ( !len( this.authToken ) ) {
-			this.getAuthToken();
-		}
+		this.getAuthenticated();
 		return this.apiRequest( api= "GET /design", argumentCollection= arguments );
 	}
 
 	function listStyles( numeric page= 1, numeric itemsPerPage= 100, string sort= "", string order= "" ) {
-		if ( !len( this.authToken ) ) {
-			this.getAuthToken();
-		}
+		this.getAuthenticated();
 		return this.apiRequest( api= "GET /itemStyle", argumentCollection= arguments );
 	}
 
