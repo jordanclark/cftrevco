@@ -62,33 +62,32 @@ component {
 			this.authToken = "";
 		}
 		if( !len( this.authToken ) ) {
-			this.getAuthToken();
+			auth = this.getAuthToken();
+			if( !auth.success ) { 
+				return auth;
+			}
 		}
+		return nullValue();
 	}
 
 	function whoAmI() {
-		this.getAuthenticated();
-		return this.apiRequest( api= "GET /whoami" );
+		return this.getAuthenticated() ?: this.apiRequest( api= "GET /whoami" );
 	}
 
 	function listItems( numeric page= 1, numeric itemsPerPage= 100, boolean active, string sort= "", string order= "", string designName= "", string sku= "" ) {
-		this.getAuthenticated();
-		return this.apiRequest( api= "GET /item", argumentCollection= arguments );
+		return this.getAuthenticated() ?: this.apiRequest( api= "GET /item", argumentCollection= arguments );
 	}
 
 	function listCategories( numeric page= 1, numeric itemsPerPage= 100, string sort= "", string order= "" ) {
-		this.getAuthenticated();
-		return this.apiRequest( api= "GET /category", argumentCollection= arguments );
+		return this.getAuthenticated() ?: this.apiRequest( api= "GET /category", argumentCollection= arguments );
 	}
 
 	function listDesigns( numeric page= 1, numeric itemsPerPage= 100, string sort= "", string order= "", string q= "", string designId= "", string designName= "", string name= "" ) {
-		this.getAuthenticated();
-		return this.apiRequest( api= "GET /design", argumentCollection= arguments );
+		return this.getAuthenticated() ?: this.apiRequest( api= "GET /design", argumentCollection= arguments );
 	}
 
 	function listStyles( numeric page= 1, numeric itemsPerPage= 100, string sort= "", string order= "" ) {
-		this.getAuthenticated();
-		return this.apiRequest( api= "GET /itemStyle", argumentCollection= arguments );
+		return this.getAuthenticated() ?: this.apiRequest( api= "GET /itemStyle", argumentCollection= arguments );
 	}
 
 	struct function apiRequest( required string api ) {
