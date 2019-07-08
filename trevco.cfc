@@ -154,7 +154,7 @@ component {
 			out.success = true;
 		}
 		// parse response 
-		if ( len( out.response ) ) {
+		if ( len( out.response ) && isJson( out.response ) ) {
 			try {
 				out.response = deserializeJSON( out.response );
 				if ( isStruct( out.response ) && structKeyExists( out.response, "meta" ) && structKeyExists( out.response.meta, "message" ) ) {
@@ -164,6 +164,8 @@ component {
 			} catch (any cfcatch) {
 				out.error= "JSON Error: " & (cfcatch.message?:"No catch message") & " " & (cfcatch.detail?:"No catch detail");
 			}
+		} else {
+			out.error= "Response not JSON: #out.response#";
 		}
 		if ( len( out.error ) ) {
 			out.success = false;
